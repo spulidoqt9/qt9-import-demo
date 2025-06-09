@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QT9 - Import Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      display: flex;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: darkred;
+      color: white;
+      height: 100vh;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    .sidebar h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar li {
+      margin-bottom: 1.3rem;
+      font-size: 1.2rem;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+    }
+    .container {
+      flex-grow: 1;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+    }
+    .cheader {
+      font-size: 1.1rem;
+    }
+    .import-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .import-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .highlight {
+      font-weight: bold;
+      color: darkred;
+    }
+    .two-col {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .two-col > div {
+      flex: 1;
+    }
+    .disclaimer-box {
+      background: #fff8b3;
+      padding: 1rem;
+      border-left: 5px solid #f0c000;
+      font-weight: bold;
+    }
+    .upload-section input[type="file"] {
+      margin-top: 0.5rem;
+    }
+    .upload-section input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+    .preview-section table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+    .preview-section th,
+    .preview-section td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    .preview-section thead {
+      background-color: #444;
+      color: #fff;
+    }
+    .preview-section tbody td {
+      background-color: #f9f9f9;
+    }
+    #import-sections {
+      display: none;
+    }
+  </style>
+  <script>
+    function toggleImportSections(checkbox) {
+      const importSections = document.getElementById('import-sections');
+      importSections.style.display = checkbox.checked ? 'flex' : 'none';
+    }
+  </script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>QT9 QMS</h2>
+    <ul>
+      <li><a href="#">Global</a></li>
+      <li><a href="#">Manage</a></li>
+      <li><a href="#">Integration</a></li>
+      <li><a href="#">ISO Functions</a></li>
+      <li><a href="#">Doc. Control</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Reporting</a></li>
+      <li><a href="#">Training</a></li>
+      <li><a href="#">Projects / Tasks</a></li>
+      <li><a href="#">Maintenance</a></li>
+      <li><a href="#">Safety</a></li>
+      <li><a href="#">Customers</a></li>
+      <li><a href="#">Suppliers</a></li>
+      <li><a href="#">Help</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h1>Import Data</h1>
+
+    <div class="card">
+      <p class="cheader"><strong>Type of Import</strong></p>
+      <div class="import-group">
+        <label><input type="radio" name="importType" /> Users</label>
+        <label><input type="radio" name="importType" /> Customers</label>
+        <label><input type="radio" name="importType" /> Suppliers</label>
+        <label><input type="radio" name="importType" /> Products</label>
+        <label><input type="radio" name="importType" /> Employees</label>
+        <label><input type="radio" name="importType" /> Gauges</label>
+        <label><input type="radio" name="importType" /> Equipment</label>
+        <label><input type="radio" name="importType" /> FMEA</label>
+      </div>
+      <div class="import-group">
+        <label><input type="radio" name="importType" /> Job Titles</label>
+        <label><input type="radio" name="importType" /> Skill Sets</label>
+        <label><input type="radio" name="importType" /> Job Title Skill Sets</label>
+        <label><input type="radio" name="importType" /> Job Title Employees</label>
+        <label><input type="radio" name="importType" /> Department / Employees</label>
+      </div>
+    </div>
+
+    <div class="card two-col">
+      <div>
+        <p class="cheader"><strong>Import Template</strong></p>
+        <a href="#">QT9 Product Import Template</a>
+      </div>
+      <div>
+        <p class="cheader"><strong>Template Rules</strong></p>
+        <ul>
+          <li><span class="highlight">All columns are required</span>, but only the following must be populated:
+            <ul>
+              <li><strong>Product Name</strong></li>
+              <li><strong>Cost</strong> - Must be numeric (up to 3 decimal places). Defaults to 0 if not specified.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="disclaimer-box">
+        WARNING: Importing data will overwrite existing records and make a <u>permanent change</u> to your database.
+        This action is <u>not reversible</u>. Double-check your file for accuracy before proceeding.
+        Once submitted, changes cannot be undone.<br><br>
+        <label><input type="checkbox" name="acknowledge" onchange="toggleImportSections(this)" /> I acknowledge and accept the risks of running a global data import.</label>
+      </div>
+    </div>
+
+    <div class="card two-col" id="import-sections">
+      <div class="instructions">
+        <p class="cheader"><strong>Import Instructions</strong></p>
+        <ol>
+          <li>Select an import type.</li>
+          <li>Download and complete the <span class="highlight">Import Template</span>.</li>
+          <li>Refer to the second worksheet for field definitions and legends.</li>
+          <li>Save your file and upload it below.</li>
+          <li>Use <span class="highlight">Cancel Import</span> to clear or <span class="highlight">Import Data</span> to proceed.</li>
+        </ol>
+      </div>
+      <div class="upload-section">
+        <p class="cheader"><strong>Upload Import Data</strong></p>
+        <input type="file" />
+        <p>File size must be 150 MB or less <span class="highlight">Excel 97-2003 .xls format only</span></p>
+        <p><strong>NOTE:</strong> Worksheet name must be <strong>Sheet1</strong></p>
+      </div>
+    </div>
+
+    <div class="card preview-section">
+      <p class="cheader"><strong>Import Preview</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ProductName</th>
+            <th>PartNumber</th>
+            <th>Cost</th>
+            <th>Description</th>
+            <th>PartType</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6">No records to display.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
