@@ -53,6 +53,10 @@
       margin-bottom: 1.5rem;
       border-radius: 5px;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+    }
+    .cheader {
+      font-size: 1.1rem;
     }
     .import-group {
       display: flex;
@@ -64,9 +68,6 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-    }
-    .instructions {
-      font-size: 0.9rem;
     }
     .highlight {
       font-weight: bold;
@@ -81,25 +82,62 @@
     .two-col > div {
       flex: 1;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
+    .disclaimer-box {
+      background: #fff8b3;
+      padding: 1rem;
+      border-left: 5px solid #f0c000;
+      font-weight: bold;
     }
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-    th, td {
-      padding: 0.5rem;
-      text-align: left;
-    }
-    ul {
-      margin-top: 0.5rem;
+    .disclaimer-box span {
+      color: red;
     }
     .upload-section input[type="file"] {
       margin-top: 0.5rem;
     }
+    .upload-section input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+    .preview-section table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+    .preview-section th,
+    .preview-section td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    .preview-section thead {
+      background-color: #444;
+      color: #fff;
+    }
+    .preview-section tbody td {
+      background-color: #f9f9f9;
+    }
+    #import-sections {
+      display: none;
+    }
+    .button-link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: darkslateblue;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: transform 0.2s;
+    }
+    .button-link:hover {
+      transform: scale(1.1);
+    }
   </style>
+  <script>
+    function toggleImportSections(checkbox) {
+      const importSections = document.getElementById('import-sections');
+      importSections.style.display = checkbox.checked ? 'flex' : 'none';
+    }
+  </script>
 </head>
 <body>
   <div class="sidebar">
@@ -126,7 +164,7 @@
     <h1>Import Data</h1>
 
     <div class="card">
-      <p><strong>Type of Import</strong></p>
+      <p class="cheader"><strong>Type of Import</strong></p>
       <div class="import-group">
         <label><input type="radio" name="importType" /> Users</label>
         <label><input type="radio" name="importType" /> Customers</label>
@@ -146,56 +184,69 @@
       </div>
     </div>
 
-    <div class="card">
-      <p><strong>Import Template</strong></p>
-      <a href="#">QT9 Product Import Template</a>
-    </div>
-
     <div class="card two-col">
       <div>
-        <p><strong>Product Notes</strong></p>
+        <p class="cheader"><strong>Import Template</strong></p>
+        <a href="#" class="button-link">Download QT9 Product Import Template</a>
+      </div>
+      <div>
+        <p class="cheader"><strong>Template Rules</strong></p>
         <ul>
-          <li><span class="highlight">Required Fields</span> (Note that <em>all columns are required</em>, but only the following columns require data):
+          <li><span class="highlight">Not all columns are required</span>, but only the following must be populated:
             <ul>
-              <li>ProductName</li>
-              <li>Cost - Must be numeric (up to 3 decimal places). Will default to zero if not specified.</li>
+              <li><strong>Product Name</strong></li>
+              <li><strong>Cost</strong> - Must be numeric (up to 3 decimal places). Defaults to 0 if not specified.</li>
             </ul>
           </li>
         </ul>
       </div>
-      <div>
-        <p><strong>Site Legend</strong></p>
-        <table>
-          <thead>
-            <tr><th>SiteID</th><th>Site Name</th><th>CT</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>Corp</td><td>Yes</td></tr>
-            <tr><td>4</td><td>Seattle</td><td>Yes</td></tr>
-            <tr><td>5</td><td>China</td><td>No</td></tr>
-            <tr><td>6</td><td>Naperville</td><td>No</td></tr>
-          </tbody>
-        </table>
+    </div>
+
+    <div class="card">
+      <div class="disclaimer-box">
+        <span>WARNING:</span> Importing data will overwrite existing records and make a <u>permanent change</u> to your database.
+        This action is <u>not reversible</u>. Double-check your file for accuracy before proceeding.
+        Once submitted, changes cannot be undone.<br><br>
+        <label><input type="checkbox" name="acknowledge" onchange="toggleImportSections(this)" /> I acknowledge and accept the risks of running a global data import.</label>
       </div>
     </div>
 
- <div class="card instructions">
-  <p><strong>Import Instructions</strong></p>
-  <ol>
-    <li>Select an import type.</li>
-    <li>Download and complete the <span class="highlight">Import Template</span>.</li>
-    <li>Refer to the second worksheet for field definitions and legends.</li>
-    <li>Save your file and upload it below.</li>
-    <li>Use <span class="highlight">Cancel Import</span> to clear or <span class="highlight">Import Data</span> to proceed.</li>
-  </ol>
-</div>
+    <div class="card two-col" id="import-sections">
+      <div class="instructions">
+        <p class="cheader"><strong>Import Instructions</strong></p>
+        <ol>
+          <li>Select an import type.</li>
+          <li>Download and complete the <span class="highlight">Import Template</span>.</li>
+          <li>Refer to the second worksheet for field definitions and legends.</li>
+          <li>Save your file and upload it below.</li>
+          <li>Use <span class="highlight">Cancel Import</span> to clear or <span class="highlight">Import Data</span> to proceed.</li>
+        </ol>
+      </div>
+      <div class="upload-section">
+        <p class="cheader"><strong>Upload Import Data</strong></p>
+        <input type="file" />
+        <p>File size must be 150 MB or less <span class="highlight">Excel 97-2003 .xls format only</span></p>
+        <p><strong>NOTE:</strong> Worksheet name must be <strong>Sheet1</strong></p>
+      </div>
+    </div>
 
-
-    <div class="card upload-section">
-      <p><strong>Upload Import Data</strong></p>
-      <input type="file" />
-      <p>File size must be 150 MB or less <span class="highlight">Excel 97-2003 .xls format only</span></p>
-      <p><strong>NOTE:</strong> Worksheet name must be <strong>Sheet1</strong></p>
+    <div class="card preview-section">
+      <p class="cheader"><strong>Import Preview</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ProductName</th>
+            <th>PartNumber</th>
+            <th>Cost</th>
+            <th>Description</th>
+            <th>PartType</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6">No records to display.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </body>
